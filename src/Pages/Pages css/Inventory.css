@@ -1,0 +1,58 @@
+.inventory-container {
+  padding: 2rem;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.inventory-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 1.5rem;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.product-card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card h3 {
+  font-size: 1.2rem;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.product-card p {
+  font-size: 0.95rem;
+  color: #334155;
+  margin: 0.25rem 0;
+}
+
+.inventory-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.inventory-btn:hover {
+  background-color: #1e40af;
+}
