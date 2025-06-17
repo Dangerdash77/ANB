@@ -267,3 +267,29 @@
   color: red;
   margin-bottom: 10px;
 }
+
+@media (max-width: 1350px) {
+  .cart-button {
+    left: 93%;
+  }
+}
+@media (max-width: 1000px) {
+  .cart-button {
+    left: 92%;
+  }
+}
+@media (max-width: 900px) {
+  .cart-button {
+    left: 91%;
+  }
+}
+@media (max-width: 750px) {
+  .cart-button {
+    left: 88%;
+  }
+}
+@media (max-width: 580px) {
+  .cart-button {
+    left: 84%;
+  }
+}
