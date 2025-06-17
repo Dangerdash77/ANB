@@ -1,49 +1,70 @@
-// src/Components/Header.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Components css/Header.css';
 
 const Header = ({ isLoggedIn, role, onLogout }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
   const navigate = useNavigate();
 
   const handleLogoutClick = () => {
-    onLogout();         // Clears state and localStorage
-    navigate('/');      // Redirect to homepage
+    onLogout();
+    navigate('/');
+    setMenuOpen(false);
   };
+
+  const toggleMenu = () => setMenuOpen(prev => !prev);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 900);
+      if (window.innerWidth >= 900) setMenuOpen(false);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <header className="header">
       <div className="logo">ANB Industries</div>
-      <nav>
-        {isLoggedIn ? (
-          <>
-            <NavLink to="/company">Company</NavLink>
-            <NavLink to="/profile">Profile</NavLink>
 
-            {role === 'owner' && (
-              <>
-                <NavLink to="/manage-products">Manage Products</NavLink>
-                <NavLink to="/view-careers">Career Requests</NavLink>
-                <NavLink to="/view-contacts">Contact Requests</NavLink>
-              </>
-            )}
+      {isMobile && (
+        <div className={`hamburger ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      )}
 
-            {/* Logout Button */}
-            <button className="logout-btn" onClick={handleLogoutClick}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/products">Products</NavLink>
-            <NavLink to="/contact-us">Contact Us</NavLink>
-            <NavLink to="/careers">Careers</NavLink>
-            <NavLink to="/about-us">About Us</NavLink>
-            <NavLink to="/login">Login</NavLink>
-          </>
-        )}
-      </nav>
+      {(menuOpen || !isMobile) && (
+        <nav className={`nav-links ${menuOpen ? 'show' : ''}`}>
+          {isLoggedIn ? (
+            <>
+              <NavLink to="/company" onClick={() => setMenuOpen(false)}>Company</NavLink>
+              <NavLink to="/profile" onClick={() => setMenuOpen(false)}>Profile</NavLink>
+              {role === 'owner' && (
+                <>
+                  <NavLink to="/manage-products" onClick={() => setMenuOpen(false)}>Manage Products</NavLink>
+                  <NavLink to="/view-careers" onClick={() => setMenuOpen(false)}>Career Requests</NavLink>
+                  <NavLink to="/view-contacts" onClick={() => setMenuOpen(false)}>Contact Requests</NavLink>
+                </>
+              )}
+              {isMobile && (
+                <button className="logout-btn" onClick={handleLogoutClick}>Logout</button>
+              )}
+            </>
+          ) : (
+            <>
+              <NavLink to="/" onClick={() => setMenuOpen(false)}>Home</NavLink>
+              <NavLink to="/products" onClick={() => setMenuOpen(false)}>Products</NavLink>
+              <NavLink to="/contact-us" onClick={() => setMenuOpen(false)}>Contact Us</NavLink>
+              <NavLink to="/careers" onClick={() => setMenuOpen(false)}>Careers</NavLink>
+              <NavLink to="/about-us" onClick={() => setMenuOpen(false)}>About Us</NavLink>
+              <NavLink to="/login" onClick={() => setMenuOpen(false)}>Login</NavLink>
+            </>
+          )}
+        </nav>
+      )}
     </header>
   );
 };
