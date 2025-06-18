@@ -10,6 +10,10 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get("/", (req, res) => {
+res.send("Hello world");
+})
+
 // Dummy login data
 const users = [
   { username: 'owner', password: '123456', role: 'owner' },
