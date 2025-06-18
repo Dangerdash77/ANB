@@ -1,0 +1,80 @@
+.print-bill-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  background: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  color: #1f2937;
+}
+
+.bill-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+  color: #1e3a8a;
+}
+
+.bill-header p {
+  margin: 0.1rem 0;
+}
+
+.bill-customer {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-left: 4px solid #2563eb;
+}
+
+.bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.bill-table th,
+.bill-table td {
+  border: 1px solid #cbd5e1;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.bill-table th {
+  background-color: #f1f5f9;
+}
+
+.bill-total {
+  margin-top: 1.5rem;
+  text-align: right;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.print-btn {
+  margin-top: 2rem;
+  padding: 0.7rem 1.5rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.print-btn:hover {
+  background-color: #1e40af;
+}
+
+/* Print Styles */
+@media print {
+  .print-btn {
+    display: none;
+  }
+
+  body {
+    background: none;
+  }
+
+  .print-bill-container {
+    box-shadow: none;
+    margin: 0;
+  }
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://anbindustries.com/</loc>
+    <priority>1.00</priority>
+  </url>
+
+  <url>
+    <loc>https://anbindustries.com/products</loc>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://anbindustries.com/contact-us</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://anbindustries.com/careers</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://anbindustries.com/about-us</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://anbindustries.com/quote</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Owner/Admin-only pages (optional indexing) -->
+  <url>
+    <loc>https://anbindustries.com/manage-products</loc>
+    <priority>0.50</priority>
+  </url>
+
+  <url>
+    <loc>https://anbindustries.com/view-careers</loc>
+    <priority>0.50</priority>
+  </url>
+
+  <url>
+    <loc>https://anbindustries.com/view-contacts</loc>
+    <priority>0.50</priority>
+  </url>
+
+</urlset>
