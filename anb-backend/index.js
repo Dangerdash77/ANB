@@ -22,7 +22,7 @@ const users = [
 ];
 
 // Login route
-app.post('https://anb-nuis.vercel.app/api/login', (req, res) => {
+app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
 
   const user = users.find(u => u.username === username && u.password === password);
@@ -44,7 +44,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Quote/Sample/Order mail route
-app.post('https://anb-nuis.vercel.app/api/send-mail', async (req, res) => {
+app.post('/api/send-mail', async (req, res) => {
   const { type, name, email, phone, company, address, items } = req.body;
 
   const itemList = items.map(item =>
@@ -79,7 +79,7 @@ app.post('https://anb-nuis.vercel.app/api/send-mail', async (req, res) => {
 });
 
 // ✅ Contact form route
-app.post('https://anb-nuis.vercel.app/api/contact', async (req, res) => {
+app.post('/api/contact', async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
 
   if (!name || !email || !subject || !message) {
