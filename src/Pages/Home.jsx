@@ -18,7 +18,7 @@ import img6 from '../assets/product img/Arabian Trishul.png';
 import img7 from '../assets/product img/Arabian Mindi.png';
 import img8 from '../assets/product img/Bottom Chain.png';
 import img9 from '../assets/product img/Endless chain.png';
-import img10 from '../assets/product img/EndlessWhite.jpg';
+import img10 from '../assets/product img/Endlesswhite.jpg';
 import img11 from '../assets/product img/Operation Chain B.jpg';
 import img12 from '../assets/product img/Operation Chain Brown.jpg';
 import img13 from '../assets/product img/Operation Chain S.jpg';
