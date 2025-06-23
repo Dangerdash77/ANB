@@ -12,9 +12,16 @@
 }
 
 .logo {
-  font-weight: bold;
-  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
 }
+
+.logo img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
 
 /* Desktop nav */
 .nav-links {

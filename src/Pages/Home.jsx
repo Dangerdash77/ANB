@@ -1,30 +1,105 @@
 import React, { useEffect, useState } from 'react';
 import './Pages css/Home.css';
-import slider1 from '../assets/image.jpg';
-import slider2 from '../assets/logo.png';
-import slider3 from '../assets/image.jpg';
+import slider1 from '../assets/Banner 1.jpg';
+import slider2 from '../assets/Banner 2.jpg';
+import slider3 from '../assets/Banner 3.jpg';
 import trust1 from '../assets/logo.png';
 import trust2 from '../assets/logo.png';
 import trust3 from '../assets/logo.png';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useNavigate } from 'react-router-dom';
+import img1 from '../assets/product img/6 Gear Control.png';
+import img2 from '../assets/product img/Zebra Metal.png';
+import img3 from '../assets/product img/Zebra Plastic.png';
+import img4 from '../assets/product img/Roman Control.png';
+import img5 from '../assets/product img/M Runner.png';
+import img6 from '../assets/product img/Arabian Trishul.png';
+import img7 from '../assets/product img/Arabian Mindi.png';
+import img8 from '../assets/product img/Bottom Chain.png';
+import img9 from '../assets/product img/Endless chain.png';
+import img10 from '../assets/product img/EndlessWhite.jpg';
+import img11 from '../assets/product img/Operation Chain B.jpg';
+import img12 from '../assets/product img/Operation Chain Brown.jpg';
+import img13 from '../assets/product img/Operation Chain S.jpg';
+import img14 from '../assets/product img/Cod Weight 1.png';
+import img15 from '../assets/product img/Cod Weight 2.png';
 
 const images = [slider1, slider2, slider3];
 
 const productData = [
   {
-    image: slider1,
+    image: img1,
     title: 'Premium Roller Chain',
     description: 'High-durability chain designed for smooth curtain operations in all conditions.',
   },
   {
-    image: slider2,
+    image: img2,
     title: 'Steel Roller Set',
     description: 'Reliable and rust-resistant roller sets used in industrial curtain systems.',
   },
   {
-    image: slider3,
+    image: img3,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img4,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img5,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img6,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img7,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img8,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img9,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img10,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img11,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img12,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img13,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img14,
+    title: 'Aluminum Roller System',
+    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+  },
+    {
+    image: img15,
     title: 'Aluminum Roller System',
     description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
   },
@@ -51,7 +126,7 @@ const Home = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentProductIndex((prev) => (prev + 1) % productData.length);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 

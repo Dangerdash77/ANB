@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import './Pages css/Products.css';
 import cartIcon from '../assets/cart.png';
-import img1 from '../assets/logo.png';
-import img2 from '../assets/Frame 4.png';
-import img3 from '../assets/image.jpg';
-import img4 from '../assets/product img/6 Gear Control.png';
-import img5 from '../assets/product img/Zebra Metal.png';
-import img6 from '../assets/product img/Zebra Plastic.png';
-import img7 from '../assets/product img/Cod Weight 1.png';
-import img8 from '../assets/product img/Cod Weight 2.png';
+import img1 from '../assets/product img/6 Gear Control.png';
+import img2 from '../assets/product img/Zebra Metal.png';
+import img3 from '../assets/product img/Zebra Plastic.png';
+import img4 from '../assets/product img/Roman Control.png';
+import img5 from '../assets/product img/M Runner.png';
+import img6 from '../assets/product img/Arabian Trishul.png';
+import img7 from '../assets/product img/Arabian Mindi.png';
+import img8 from '../assets/product img/Bottom Chain.png';
 import img9 from '../assets/product img/Endless chain.png';
-import img10 from '../assets/product img/Operation Chain B.jpg';
-import img11 from '../assets/product img/Operation Chain Brown.jpg';
-import img12 from '../assets/product img/Operation Chain S.jpg';
+import img10 from '../assets/product img/EndlessWhite.jpg';
+import img11 from '../assets/product img/Operation Chain B.jpg';
+import img12 from '../assets/product img/Operation Chain Brown.jpg';
+import img13 from '../assets/product img/Operation Chain S.jpg';
+import img14 from '../assets/product img/Cod Weight 1.png';
+import img15 from '../assets/product img/Cod Weight 2.png';
+
 const sampleProducts = [
   {
     id: 1,
@@ -24,7 +28,7 @@ const sampleProducts = [
     standardQty: '50 pcs',
     image: img1,
     minQty: 10,
-    fields: ['size', 'design','standardQty','colour'],
+    fields: ['size', 'design', 'standardQty', 'colour'],
   },
   {
     id: 2,
@@ -56,7 +60,7 @@ const sampleProducts = [
     minQty: 3,
     fields: ['size', 'design'],
   },
-    {
+  {
     id: 5,
     name: 'Aluminum System',
     number: 'AS304',
@@ -66,7 +70,7 @@ const sampleProducts = [
     minQty: 3,
     fields: ['size', 'design'],
   },
-    {
+  {
     id: 6,
     name: 'Aluminum System',
     number: 'AS304',
@@ -76,7 +80,7 @@ const sampleProducts = [
     minQty: 3,
     fields: ['size', 'design'],
   },
-    {
+  {
     id: 7,
     name: 'Aluminum System',
     number: 'AS304',
@@ -86,7 +90,7 @@ const sampleProducts = [
     minQty: 3,
     fields: ['size', 'design'],
   },
-    {
+  {
     id: 8,
     name: 'Aluminum System',
     number: 'AS304',
@@ -96,7 +100,7 @@ const sampleProducts = [
     minQty: 3,
     fields: ['size', 'design'],
   },
-    {
+  {
     id: 9,
     name: 'Aluminum System',
     number: 'AS304',
@@ -106,7 +110,7 @@ const sampleProducts = [
     minQty: 3,
     fields: ['size', 'design'],
   },
-    {
+  {
     id: 10,
     name: 'Aluminum System',
     number: 'AS304',
@@ -116,7 +120,7 @@ const sampleProducts = [
     minQty: 3,
     fields: ['size', 'design'],
   },
-    {
+  {
     id: 11,
     name: 'Aluminum System',
     number: 'AS304',
@@ -126,13 +130,43 @@ const sampleProducts = [
     minQty: 3,
     fields: ['size', 'design'],
   },
-    {
+  {
     id: 12,
     name: 'Aluminum System',
     number: 'AS304',
     size: '12mm',
     design: 'Textured',
     image: img12,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+  {
+    id: 13,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img13,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+  {
+    id: 14,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img14,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+  {
+    id: 15,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img15,
     minQty: 3,
     fields: ['size', 'design'],
   },
@@ -305,25 +339,26 @@ const ProductPage = () => {
                     <textarea name="address" value={formData.address} onChange={handleChange} required />
                   </label>
                 )}
+                <div className="product-summary-scroll">
 
-                <div className="product-summary">
-                  {cart.map((product) => (
-                    <div key={product.id} className="product-summary-item">
-                      <span>{product.name}</span>
-                      {formType === "Sample" ? (
-                        <span>Quantity: 1</span>
-                      ) : (
-                        <input
-                          type="number"
-                          min={product.minQty}
-                          value={product.quantity}
-                          onChange={(e) => handleQuantityChange(product.id, e.target.value)}
-                        />
-                      )}
-                    </div>
-                  ))}
+                  <div className="product-summary">
+                    {cart.map((product) => (
+                      <div key={product.id} className="product-summary-item">
+                        <span>{product.name}</span>
+                        {formType === "Sample" ? (
+                          <span>Quantity: 1</span>
+                        ) : (
+                          <input
+                            type="number"
+                            min={product.minQty}
+                            value={product.quantity}
+                            onChange={(e) => handleQuantityChange(product.id, e.target.value)}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-
                 <div className="form-actions">
                   <button type="submit" disabled={cart.length === 0}>Submit</button>
                   <button type="button" onClick={() => setFormType(null)}>Cancel</button>

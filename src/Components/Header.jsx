@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Components css/Header.css';
+import logo from '../assets/logo.jpg'; 
 
 const Header = ({ isLoggedIn, role, onLogout }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,7 +27,9 @@ const Header = ({ isLoggedIn, role, onLogout }) => {
 
   return (
     <header className="header">
-      <div className="logo">ANB Industries</div>
+<div className="logo">
+  <img src={logo} alt="ANB Industries" />
+</div>
 
       {isMobile && (
         <div className={`hamburger ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
