@@ -2,13 +2,142 @@ import React, { useState } from 'react';
 import './Pages css/Products.css';
 import cartIcon from '../assets/cart.png';
 import img1 from '../assets/logo.png';
-
+import img2 from '../assets/Frame 4.png';
+import img3 from '../assets/image.jpg';
+import img4 from '../assets/product img/6 Gear Control.png';
+import img5 from '../assets/product img/Zebra Metal.png';
+import img6 from '../assets/product img/Zebra Plastic.png';
+import img7 from '../assets/product img/Cod Weight 1.png';
+import img8 from '../assets/product img/Cod Weight 2.png';
+import img9 from '../assets/product img/Endless chain.png';
+import img10 from '../assets/product img/Operation Chain B.jpg';
+import img11 from '../assets/product img/Operation Chain Brown.jpg';
+import img12 from '../assets/product img/Operation Chain S.jpg';
 const sampleProducts = [
-  { id: 1, name: 'Roller Chain', number: 'RC101', size: '15mm', design: 'Classic', image: img1, minQty: 10 },
-  { id: 2, name: 'Steel Roller', number: 'SR202', size: '20mm', design: 'Industrial', image: img1, minQty: 5 },
-  { id: 3, name: 'Aluminum System', number: 'AS303', size: '10mm', design: 'Modern', image: img1, minQty: 3 },
-  { id: 4, name: 'Aluminum System', number: 'AS303', size: '10mm', design: 'Modern', image: img1, minQty: 3 },
+  {
+    id: 1,
+    name: 'Roller Chain',
+    number: 'RC101',
+    size: '15mm',
+    design: 'Classic',
+    colour: 'red',
+    standardQty: '50 pcs',
+    image: img1,
+    minQty: 10,
+    fields: ['size', 'design','standardQty','colour'],
+  },
+  {
+    id: 2,
+    name: 'Steel Roller',
+    number: 'SR202',
+    size: '20mm',
+    standardQty: '50 pcs',
+    image: img2,
+    minQty: 5,
+    fields: ['size', 'standardQty'],
+  },
+  {
+    id: 3,
+    name: 'Aluminum System',
+    number: 'AS303',
+    size: '10mm',
+    colour: 'Silver',
+    image: img3,
+    minQty: 3,
+    fields: ['name', 'colour', 'size'],
+  },
+  {
+    id: 4,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img4,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+    {
+    id: 5,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img5,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+    {
+    id: 6,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img6,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+    {
+    id: 7,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img7,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+    {
+    id: 8,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img8,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+    {
+    id: 9,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img9,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+    {
+    id: 10,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img10,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+    {
+    id: 11,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img11,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
+    {
+    id: 12,
+    name: 'Aluminum System',
+    number: 'AS304',
+    size: '12mm',
+    design: 'Textured',
+    image: img12,
+    minQty: 3,
+    fields: ['size', 'design'],
+  },
 ];
+
 
 const ProductPage = () => {
   const [cart, setCart] = useState([]);
@@ -95,9 +224,19 @@ const ProductPage = () => {
             <img src={product.image} alt={product.name} />
             <div className="product-details">
               <h3>{product.name}</h3>
-              <p><strong>Product No:</strong> {product.number}</p>
-              <p><strong>Size:</strong> {product.size}</p>
-              <p><strong>Design:</strong> {product.design}</p>
+              {product.fields.includes('size') && (
+                <p><strong>Size:</strong> {product.size}</p>
+              )}
+              {product.fields.includes('design') && (
+                <p><strong>Design:</strong> {product.design}</p>
+              )}
+              {product.fields.includes('colour') && (
+                <p><strong>Colour:</strong> {product.colour}</p>
+              )}
+              {product.fields.includes('standardQty') && (
+                <p><strong>Standard Qty:</strong> {product.standardQty}</p>
+              )}
+
               <button onClick={() => toggleCart(product)} className="add-cart">
                 {isInCart(product.id) ? '−' : '+'}
               </button>
