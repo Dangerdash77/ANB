@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import './Pages css/Products.css';
 import cartIcon from '../assets/cart.png';
 // Add separate imports for each product image:
-import img1 from '../assets/product_img/Plastic Endless Chain.png';
+import img1 from '../assets/product_img/Plastic Endless chain.png';
 import img2 from '../assets/product_img/Plastic Operation Chain W.jpg';
 import img3 from '../assets/product_img/Plastic Operation Chain Brown.jpg';
 import img4 from '../assets/product_img/Plastic Operation Chain S.jpg';

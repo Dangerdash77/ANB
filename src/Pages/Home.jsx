@@ -9,7 +9,7 @@ import trust3 from '../assets/logo.png';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useNavigate } from 'react-router-dom';
-import img1 from '../assets/product_img/Plastic Endless Chain.png';
+import img1 from '../assets/product_img/Plastic Endless chain.png';
 import img2 from '../assets/product_img/Plastic Operation Chain W.jpg';
 import img3 from '../assets/product_img/Plastic Operation Chain Brown.jpg';
 import img4 from '../assets/product_img/Plastic Operation Chain S.jpg';
