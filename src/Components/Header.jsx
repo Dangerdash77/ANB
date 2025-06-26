@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Components css/Header.css';
-import logo from '../assets/logo.jpg'; 
+import logo from '../assets/logo.png'; 
 
 const Header = ({ isLoggedIn, role, onLogout }) => {
   const [menuOpen, setMenuOpen] = useState(false);

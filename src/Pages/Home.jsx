@@ -9,21 +9,31 @@ import trust3 from '../assets/logo.png';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useNavigate } from 'react-router-dom';
-import img1 from '../assets/product img/6 Gear Control.png';
-import img2 from '../assets/product img/Zebra Metal.png';
-import img3 from '../assets/product img/Zebra Plastic.png';
-import img4 from '../assets/product img/Roman Control.png';
-import img5 from '../assets/product img/M Runner.png';
-import img6 from '../assets/product img/Arabian Trishul.png';
-import img7 from '../assets/product img/Arabian Mindi.png';
-import img8 from '../assets/product img/Bottom Chain.png';
-import img9 from '../assets/product img/Endless chain.png';
-import img10 from '../assets/product img/Endlesswhite.jpg';
-import img11 from '../assets/product img/Operation Chain B.jpg';
-import img12 from '../assets/product img/Operation Chain Brown.jpg';
-import img13 from '../assets/product img/Operation Chain S.jpg';
-import img14 from '../assets/product img/Cod Weight 1.png';
-import img15 from '../assets/product img/Cod Weight 2.png';
+import img1 from '../assets/product img/Plastic Endless Chain.png';
+import img2 from '../assets/product img/Plastic Operation Chain W.jpg';
+import img3 from '../assets/product img/Plastic Operation Chain Brown.jpg';
+import img4 from '../assets/product img/Plastic Operation Chain S.jpg';
+import img5 from '../assets/product img/Plastic Operation Chain B.jpg';
+import img6 from '../assets/product img/6 Gear Control.png';
+import img7 from '../assets/product img/Zebra Metal.png';
+import img8 from '../assets/product img/Zebra Plastic.png';
+// import img9 from '../assets/product img/Heavy Cord Weight Plain.png';
+import img10 from '../assets/product img/Heavy Cord Weight Printed.png';
+import img11 from '../assets/product img/Oval Cord Weight Plain.png';
+// import img12 from '../assets/product img/Oval Cord Weight Printed.png';
+import img13 from '../assets/product img/Arabian Mindi Runner.png';
+import img14 from '../assets/product img/Arabian Trishul Runner.png';
+// import img15 from '../assets/product img/M Runner Ripple.png';
+import img16 from '../assets/product img/M Runner.png';
+import img17 from '../assets/product img/Roman Control Set.png';
+import img18 from '../assets/product img/Bottom Chain.png';
+// import img19 from '../assets/product img/Plastic Held.png';
+// import img20 from '../assets/product img/Plastic Lotion Pump.png';
+// import img21 from '../assets/product img/Soap Dispenser Pump.png';
+import img22 from '../assets/product img/Chain Stopper Button.png';
+import img23 from '../assets/product img/Chain Stopper Button Trans.png';
+import img24 from '../assets/product img/Chain Stopper Ball.png';
+import img25 from '../assets/product img/Chain Jointer.png';
 
 const images = [slider1, slider2, slider3];
 
@@ -47,62 +57,7 @@ const productData = [
     image: img4,
     title: 'Aluminum Roller System',
     description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img5,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img6,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img7,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img8,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img9,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img10,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img11,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img12,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img13,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img14,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
-    {
-    image: img15,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
-  },
+  }
 ];
 
 const Home = () => {
