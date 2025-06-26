@@ -40,23 +40,128 @@ const images = [slider1, slider2, slider3];
 const productData = [
   {
     image: img1,
-    title: 'Premium Roller Chain',
+    title: 'Plastic Endless Chain',
     description: 'High-durability chain designed for smooth curtain operations in all conditions.',
   },
   {
     image: img2,
-    title: 'Steel Roller Set',
-    description: 'Reliable and rust-resistant roller sets used in industrial curtain systems.',
+    title: 'Plastic Operation Chain',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
   },
   {
     image: img3,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+    title: 'Plastic Operation Chain',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
   },
-    {
+  {
     image: img4,
-    title: 'Aluminum Roller System',
-    description: 'Lightweight and corrosion-free curtain rolling solution for modern interiors.',
+    title: 'Plastic Operation Chain',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img5,
+    title: 'Plastic Operation Chain',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img6,
+    title: '6‑Gear Roller Control Unit',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img7,
+    title: 'Zebra Control Unit (Metal end caps)',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img8,
+    title: 'Zebra Control Unit (Plastic end caps)',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img9,
+    title: 'Heavy Cord Weight (Plain)',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img10,
+    title: 'Heavy Cord Weight (Printed)',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img11,
+    title: 'Oval Cord Weight (Plain)',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img12,
+    title: 'Oval Cord Weight (Printed)',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img13,
+    title: 'Arabian Mindi Runner',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img14,
+    title: 'Arabian Trishul Runner',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img15,
+    title: 'M Runner Ripple',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img16,
+    title: 'M Runner',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img17,
+    title: 'Roman Control Set',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img18,
+    title: 'Bottom Chain',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img19,
+    title: 'Plastic Held',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img20,
+    title: 'Plastic Lotion Pump',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img21,
+    title: 'Soap Dispenser Pump',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img22,
+    title: 'Chain Stopper Button',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img23,
+    title: 'Chain Stopper Button Transparent',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img24,
+    title: 'Chain Stopper Ball',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  },
+  {
+    image: img25,
+    title: 'Chain Jointer',
+    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
   }
 ];
 

@@ -33,9 +33,9 @@ const Footer = () => {
         {/* Column 3 - Contact Info */}
         <div className="footer-column contact">
           <h4>Contact Us</h4>
-          <p>GIDC Road, Shapar-Veraval, Rajkot, Gujarat, India</p>
-          <p>Email: <a href="mailto:anb.industries@email.com">anb.industries@email.com</a></p>
-          <p>Phone: <a href="tel:+919876543210">+91 98765 43210</a></p>
+          <p>Shapar-Veraval, Rajkot, Gujarat, India</p>
+          <p>Email: <a href="mailto:anbind2020@gmail.com">anbind2020@gmail.com</a></p>
+          <p>Phone: <a href="tel:+918460603033">+91 84606 03033</a></p>
         </div>
       </div>
 

@@ -80,7 +80,7 @@ const Contact = () => {
             <FaEnvelope className="icon" />
             <div>
               <h3>Email</h3>
-              <p>info@anbindustries.com</p>
+              <p>anbind2020@gmail.com</p>
             </div>
           </div>
 
@@ -88,7 +88,7 @@ const Contact = () => {
             <FaPhone className="icon" />
             <div>
               <h3>Phone</h3>
-              <p>+91 98765 43210</p>
+              <p>+91 84606 03033</p>
             </div>
           </div>
 
@@ -96,7 +96,7 @@ const Contact = () => {
             <FaMapMarkerAlt className="icon" />
             <div>
               <h3>Address</h3>
-              <p>GIDC Road, Shapar-Veraval,<br />Rajkot, Gujarat, India</p>
+              <p>Shapar-Veraval,<br />Rajkot, Gujarat, India</p>
             </div>
           </div>
         </div>
