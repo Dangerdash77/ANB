@@ -78,11 +78,11 @@ const productData = [
     title: 'Zebra Control Unit (Plastic end caps)',
     description: 'High-durability chain designed for smooth curtain operations in all conditions.',
   },
-  {
-    image: img9,
-    title: 'Heavy Cord Weight (Plain)',
-    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
-  },
+  // {
+  //   image: img9,
+  //   title: 'Heavy Cord Weight (Plain)',
+  //   description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  // },
   {
     image: img10,
     title: 'Heavy Cord Weight (Printed)',
@@ -93,11 +93,11 @@ const productData = [
     title: 'Oval Cord Weight (Plain)',
     description: 'High-durability chain designed for smooth curtain operations in all conditions.',
   },
-  {
-    image: img12,
-    title: 'Oval Cord Weight (Printed)',
-    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
-  },
+  // {
+  //   image: img12,
+  //   title: 'Oval Cord Weight (Printed)',
+  //   description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  // },
   {
     image: img13,
     title: 'Arabian Mindi Runner',
@@ -108,11 +108,11 @@ const productData = [
     title: 'Arabian Trishul Runner',
     description: 'High-durability chain designed for smooth curtain operations in all conditions.',
   },
-  {
-    image: img15,
-    title: 'M Runner Ripple',
-    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
-  },
+  // {
+  //   image: img15,
+  //   title: 'M Runner Ripple',
+  //   description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  // },
   {
     image: img16,
     title: 'M Runner',
@@ -128,21 +128,21 @@ const productData = [
     title: 'Bottom Chain',
     description: 'High-durability chain designed for smooth curtain operations in all conditions.',
   },
-  {
-    image: img19,
-    title: 'Plastic Held',
-    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
-  },
-  {
-    image: img20,
-    title: 'Plastic Lotion Pump',
-    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
-  },
-  {
-    image: img21,
-    title: 'Soap Dispenser Pump',
-    description: 'High-durability chain designed for smooth curtain operations in all conditions.',
-  },
+  // {
+  //   image: img19,
+  //   title: 'Plastic Held',
+  //   description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  // },
+  // {
+  //   image: img20,
+  //   title: 'Plastic Lotion Pump',
+  //   description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  // },
+  // {
+  //   image: img21,
+  //   title: 'Soap Dispenser Pump',
+  //   description: 'High-durability chain designed for smooth curtain operations in all conditions.',
+  // },
   {
     image: img22,
     title: 'Chain Stopper Button',
