@@ -326,6 +326,7 @@ const ProductPage = () => {
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', address: '', company: '',
   });
+  const [loading, setLoading] = useState(false);
 
   const cartRef = useRef(null);
   const scrollToCart = () => cartRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -392,8 +393,6 @@ const ProductPage = () => {
       setLoading(false);
     }
   };
-
-
 
   return (
     <div className="product-page">
