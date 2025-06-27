@@ -38,8 +38,9 @@ app.post('/api/login', (req, res) => {
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'manavkalola1612@gmail.com',           // ✅ Your Gmail
-    pass: 'bsrk ngst zolu llyi',                 // ✅ App password (not Gmail password)
+    user: 'anbind2020@gmail.com',           // ✅ Your Gmail
+    //pass: 'bsrk ngst zolu llyi',                 // ✅ App password (not Gmail password)
+    pass: 'qone uqnq frtp pgny'
   },
 });
 
@@ -54,8 +55,8 @@ app.post('/api/send-mail', async (req, res) => {
   const addressLine = address ? `<p><strong>Address:</strong> ${address}</p>` : '';
 
   const mailOptions = {
-    from: 'manavkalola1612@gmail.com',
-    to: 'kalola.manav2022@vitstudent.ac.in',
+    from: 'anbind2020@gmail.com',
+    to: 'anbind2020@gmail.com',
     subject: `New ${type} Request from ${name}`,
     html: `
       <h2>${type} Request</h2>
@@ -87,8 +88,8 @@ app.post('/api/contact', async (req, res) => {
   }
 
   const mailOptions = {
-    from: 'manavkalola1612@gmail.com',
-    to: 'kalola.manav2022@vitstudent.ac.in',
+    from: 'anbind2020@gmail.com',
+    to: 'anbind2020@gmail.com',
     subject: `Contact Us Message from ${name}`,
     html: `
       <h2>New Contact Message</h2>

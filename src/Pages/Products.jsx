@@ -351,10 +351,49 @@ const ProductPage = () => {
     );
   };
 
-  const handleFormSubmit = async e => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // same fetch logic...
+    setLoading(true);
+
+    const payload = {
+      type: formType,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      company: formData.company,
+      address: formType === 'Sample' || formType === 'Order' ? formData.address : '',
+      items: cart.map(p => ({
+        name: p.name,
+        quantity: formType === 'Sample' ? 1 : p.quantity,
+      })),
+    };
+
+    try {
+      const res = await fetch('https://anb-nuis.vercel.app/api/send-mail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        alert(`✅ ${formType} request sent successfully!`);
+        setFormType(null);
+        setCart([]);
+        setFormData({ name: '', email: '', phone: '', address: '', company: '' });
+      } else {
+        alert("❌ Failed to send mail. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error while sending request:", err);
+      alert("🚫 Server error. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+
 
   return (
     <div className="product-page">
@@ -494,5 +533,6 @@ const ProductPage = () => {
     </div>
   );
 };
+
 
 export default ProductPage;
