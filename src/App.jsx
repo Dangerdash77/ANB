@@ -27,7 +27,15 @@ import './App.css';
 
 const PrivateRoute = ({ element, allowedRoles }) => {
   const userRole = localStorage.getItem('userRole');
-  return allowedRoles.includes(userRole) ? element : <Navigate to="/" />;
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+  if (!isLoggedIn) return <Navigate to="/login" />;
+
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    return <Navigate to="/" />;
+  }
+
+  return element;
 };
 
 function App() {
@@ -49,17 +57,17 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/careers" element={<Career/>} />
+        <Route path="/careers" element={<Career />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setRole={setRole} />} />
         <Route path="/edit-roles" element={<PrivateRoute allowedRoles={['owner']} element={<RoleEditor />} />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/company" element={<Company />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/printbill" element={<PrintBill />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/company" element={<PrivateRoute allowedRoles={['user', 'owner', 'manager', 'employee']} element={<Company />} />} />
+        <Route path="/inventory" element={<PrivateRoute allowedRoles={['user', 'owner', 'manager', 'employee']} element={<Inventory />} />} />
+        <Route path="/printbill" element={<PrivateRoute allowedRoles={['user', 'owner', 'manager', 'employee']} element={<PrintBill />} />} />
+        <Route path="/profile" element={<PrivateRoute allowedRoles={['user', 'owner', 'manager', 'employee']} element={<Profile />} />} />
         <Route path="/manage-products" element={<PrivateRoute allowedRoles={['owner']} element={<ManageProducts />} />} />
         <Route path="/view-careers" element={<PrivateRoute allowedRoles={['owner']} element={<CareerRequests />} />} />
         <Route path="/view-contacts" element={<PrivateRoute allowedRoles={['owner']} element={<ContactRequests />} />} />

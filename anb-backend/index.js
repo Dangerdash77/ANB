@@ -12,6 +12,55 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const Product = require('./models/Product'); // or wherever it's located
+
+app.use('/api/products', authMiddleware);
+
+// 🔄 GET All Products (public)
+app.get('/api/products', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json({ success: true, products });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Failed to fetch products' });
+  }
+});
+
+// 🔐 Authenticated Routes (Owner Only)
+app.post('/api/products', authMiddleware, async (req, res) => {
+  if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
+
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.json({ success: true, product });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Error adding product' });
+  }
+});
+
+app.put('/api/products/:id', authMiddleware, async (req, res) => {
+  if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
+
+  try {
+    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json({ success: true, product: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Error updating product' });
+  }
+});
+
+app.delete('/api/products/:id', authMiddleware, async (req, res) => {
+  if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
+
+  try {
+    await Product.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Product deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Error deleting product' });
+  }
+});
+
 
 // ✅ Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
