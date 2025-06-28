@@ -1,50 +1,105 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
+// MongoDB connection
+mongoose.connect('mongodb+srv://manavkalola1612:<XRsY7Jzwjbwh1cNw>@anb.qfvinj9.mongodb.net/anb?retryWrites=true&w=majority&appName=ANB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => console.log('✅ MongoDB connected'))
+  .catch(err => console.error('❌ MongoDB error:', err));
+
+// Define User Schema
+const UserSchema = new mongoose.Schema({
+  username: { type: String, unique: true },
+  email: { type: String },
+  password: { type: String },
+  role: { type: String, default: 'user' } // default = user
+});
+
+const User = mongoose.model('User', UserSchema);
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-res.send("Hello world");
-})
+app.get("/", (req, res) => res.send("🌐 ANB Server is running!"));
 
-// Dummy login data
-const users = [
-  { username: 'owner', password: '123456', role: 'owner' },
-  { username: 'manager', password: '123456', role: 'manager' },
-  { username: 'employee', password: '123456', role: 'employee' },
-];
+// 🔐 Signup Route
+app.post('/api/signup', async (req, res) => {
+  const { username, email, password } = req.body;
 
-// Login route
-app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const existingUser = await User.findOne({ username });
+    if (existingUser) return res.status(400).json({ success: false, message: 'Username already exists' });
 
-  const user = users.find(u => u.username === username && u.password === password);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ username, email, password: hashedPassword });
+    await user.save();
 
-  if (user) {
-    res.json({ success: true, role: user.role });
-  } else {
-    res.json({ success: false, message: 'Invalid credentials' });
+    res.json({ success: true, message: 'User registered successfully' });
+  } catch (err) {
+    console.error("Signup error:", err);
+    res.status(500).json({ success: false, message: 'Signup failed' });
   }
 });
 
-// Email transporter config
+// 🔑 Login Route
+app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(401).json({ success: false, message: 'Invalid credentials' });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ success: false, message: 'Invalid credentials' });
+
+    res.json({ success: true, role: user.role });
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ success: false, message: 'Login failed' });
+  }
+});
+
+// Update user role (admin only)
+app.put('/api/update-role', async (req, res) => {
+  const { username, newRole } = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { username },
+      { role: newRole },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    res.json({ success: true, message: 'Role updated successfully', user: updatedUser });
+  } catch (err) {
+    console.error('Role update error:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// 📧 Nodemailer setup
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'anbind2020@gmail.com',           // ✅ Your Gmail
-    //pass: 'bsrk ngst zolu llyi',                 // ✅ App password (not Gmail password)
-    pass: 'qone uqnq frtp pgny'
+    user: 'anbind2020@gmail.com',
+    pass: 'qone uqnq frtp pgny' // Gmail App Password
   },
 });
 
-// Quote/Sample/Order mail route
+// 📮 Quote/Sample/Order mail route
 app.post('/api/send-mail', async (req, res) => {
   const { type, name, email, phone, company, address, items } = req.body;
 
@@ -74,12 +129,12 @@ app.post('/api/send-mail', async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: 'Mail sent successfully' });
   } catch (err) {
-    console.error('Error sending mail:', err);
+    console.error('Mail error:', err);
     res.status(500).json({ success: false, message: 'Mail sending failed' });
   }
 });
 
-// ✅ Contact form route
+// 📮 Contact form route
 app.post('/api/contact', async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
 
@@ -96,8 +151,7 @@ app.post('/api/contact', async (req, res) => {
       <p><strong>Name:</strong> ${name}</p>
       <p><strong>Email:</strong> ${email}</p>
       <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
-      <br></br>
-      <p><h3><strong>Subject:</strong> ${subject} </h3></p>
+      <h3><strong>Subject:</strong> ${subject}</h3>
       <p><strong>Message:</strong> <br>${message}</p>
     `,
   };
@@ -106,12 +160,12 @@ app.post('/api/contact', async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: 'Your message was sent successfully!' });
   } catch (err) {
-    console.error('Error sending contact message:', err);
+    console.error('Contact mail error:', err);
     res.status(500).json({ success: false, message: 'Message sending failed' });
   }
 });
 
-// Start server
+// Start Server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

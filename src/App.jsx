@@ -9,6 +9,8 @@ import Products from './Pages/Products';
 import Home from './Pages/Home';
 import Career from './Pages/Career';
 import Login from './Pages/Login';
+import RoleEditor from './Pages/RoleEditor';
+import Signup from './Pages/Signup';
 import Company from './Pages/Company';
 import Inventory from './Pages/Inventory';
 import PrintBill from './Pages/PrintBill';
@@ -49,7 +51,9 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/careers" element={<Career/>} />
         <Route path="/contact-us" element={<Contact />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setRole={setRole} />} />
+        <Route path="/edit-roles" element={<PrivateRoute allowedRoles={['owner']} element={<RoleEditor />} />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/company" element={<Company />} />

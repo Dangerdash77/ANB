@@ -1,7 +1,9 @@
 .login-container {
   max-width: 400px;
   margin: auto;
-  padding: 2rem;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 1rem;
   background: #f3f4f6;
   border-radius: 10px;
   text-align: center;
@@ -16,7 +18,7 @@
 
 .login-container input {
   display: block;
-  width: 100%;
+  width: 94%;
   padding: 0.75rem;
   margin: 0.5rem 0;
   border: 1px solid #cbd5e1;
