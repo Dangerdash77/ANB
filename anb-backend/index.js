@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const Product = require('./models/Product'); // or wherever it's located
 
-app.use('/api/products', authMiddleware);
+// app.use('/api/products', authMiddleware);
 
 // 🔄 GET All Products (public)
 app.get('/api/products', async (req, res) => {
