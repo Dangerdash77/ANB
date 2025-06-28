@@ -21,14 +21,14 @@ function Signup() {
 
       const data = await res.json();
       if (data.success) {
-        alert('Signup successful! Please login.');
+        alert('✅ Signup successful! Please login.');
         navigate('/login');
       } else {
-        alert(data.message || 'Signup failed.');
+        alert(data.message || '❌ Signup failed.');
       }
     } catch (err) {
       console.error(err);
-      alert('Server error. Try again later.');
+      alert('🚫 Server error. Try again later.');
     }
   };
 
