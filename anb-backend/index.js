@@ -6,6 +6,10 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 require('dotenv').config(); // Load .env first
 
+const authMiddleware = require('./middleware/authMiddleware');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -31,9 +35,29 @@ const User = mongoose.model('User', UserSchema);
 // ✅ Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // 🌐 Test route
 app.get("/", (req, res) => res.send("🌐 ANB Server is running!"));
+
+app.get('/api/protected', authMiddleware, (req, res) => {
+  res.json({
+    message: `Welcome ${req.user.username}, you are logged in as ${req.user.role}`,
+    user: req.user,
+  });
+});
+
+app.get('/api/admin-only', authMiddleware, (req, res) => {
+  if (req.user.role !== 'owner') {
+    return res.status(403).json({ message: 'Forbidden' });
+  }
+
+  res.json({ message: 'Hello Admin!' });
+});
+
+app.post('/api/logout', (req, res) => {
+  res.clearCookie('token').json({ success: true, message: 'Logged out' });
+});
 
 // 🔐 Signup Route
 app.post('/api/signup', async (req, res) => {
@@ -60,16 +84,30 @@ app.post('/api/signup', async (req, res) => {
 
 // 🔑 Login Route
 app.post('/api/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
+  try {
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ success: false, message: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ success: false, message: 'Invalid credentials' });
 
-    res.json({ success: true, role: user.role });
+    const token = jwt.sign(
+      { username: user.username, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '2d' }
+    );
+
+    res
+      .cookie('token', token, {
+        httpOnly: true,
+        sameSite: 'Strict',
+        secure: process.env.NODE_ENV === 'production', // true on Vercel
+        maxAge: 1000 * 60 * 60 * 24 * 2 // 2 days
+      })
+      .json({ success: true, message: 'Logged in', role: user.role });
+
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ success: false, message: 'Login failed' });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Components css/Header.css';
-import logo from '../assets/logo.png'; 
+import logo from '../assets/logo.png';
 
 const Header = ({ isLoggedIn, role, onLogout }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,9 +27,9 @@ const Header = ({ isLoggedIn, role, onLogout }) => {
 
   return (
     <header className="header">
-<div className="logo">
-  <img src={logo} alt="ANB Industries" />
-</div>
+      <div className="logo">
+        <img src={logo} alt="ANB Industries" />
+      </div>
 
       {isMobile && (
         <div className={`hamburger ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
@@ -45,6 +45,7 @@ const Header = ({ isLoggedIn, role, onLogout }) => {
             <>
               <NavLink to="/company" onClick={() => setMenuOpen(false)}>Company</NavLink>
               <NavLink to="/profile" onClick={() => setMenuOpen(false)}>Profile</NavLink>
+
               {role === 'owner' && (
                 <>
                   <NavLink to="/manage-products" onClick={() => setMenuOpen(false)}>Manage Products</NavLink>
@@ -52,9 +53,8 @@ const Header = ({ isLoggedIn, role, onLogout }) => {
                   <NavLink to="/view-contacts" onClick={() => setMenuOpen(false)}>Contact Requests</NavLink>
                 </>
               )}
-              {isMobile && (
-                <button className="logout-btn" onClick={handleLogoutClick}>Logout</button>
-              )}
+
+              <button onClick={handleLogoutClick} className="logout-btn">Logout</button>
             </>
           ) : (
             <>
