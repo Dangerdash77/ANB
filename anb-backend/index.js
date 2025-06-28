@@ -27,17 +27,42 @@ app.get('/api/products', async (req, res) => {
 });
 
 // 🔐 Authenticated Routes (Owner Only)
+// POST /api/products – Add a new product (owner only)
 app.post('/api/products', authMiddleware, async (req, res) => {
-  if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
-
   try {
-    const product = new Product(req.body);
+    // Only owners can add products
+    if (req.user.role !== 'owner') {
+      return res.status(403).json({ success: false, message: 'Forbidden: Only owners can add products' });
+    }
+
+    const { name, image, minQty, details } = req.body;
+
+    // Validate input
+    if (!name || !image || !minQty || !details) {
+      return res.status(400).json({ success: false, message: 'All fields are required' });
+    }
+
+    // Create product
+    const product = new Product({
+      name,
+      image,
+      minQty,
+      details
+    });
+
     await product.save();
-    res.json({ success: true, product });
-  } catch (err) {
-    res.status(500).json({ success: false, message: 'Error adding product' });
+
+    res.status(201).json({
+      success: true,
+      message: 'Product added successfully',
+      product
+    });
+  } catch (error) {
+    console.error('Error adding product:', error);
+    res.status(500).json({ success: false, message: 'Server error while adding product' });
   }
 });
+
 
 app.put('/api/products/:id', authMiddleware, async (req, res) => {
   if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
