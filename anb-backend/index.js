@@ -4,60 +4,65 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
-// const User = require('User');
-require('dotenv').config();
+require('dotenv').config(); // Load .env first
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI, { dbName: 'anb' })
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB error:', err));
+// ✅ Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  dbName: 'anb'
+}).then(() => {
+  console.log('✅ MongoDB connected');
+}).catch(err => {
+  console.error('❌ MongoDB error:', err);
+});
 
-// Define User Schema
+// ✅ User Schema
 const UserSchema = new mongoose.Schema({
   username: { type: String, unique: true },
   email: { type: String },
   password: { type: String },
-  role: { type: String, default: 'user' } // default = user
+  role: { type: String, default: 'user' }
 });
 
 const User = mongoose.model('User', UserSchema);
 
-// Middleware
+// ✅ Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
+// 🌐 Test route
 app.get("/", (req, res) => res.send("🌐 ANB Server is running!"));
 
 // 🔐 Signup Route
 app.post('/api/signup', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
 
-    if (!username || !password) return res.status(400).json({ success: false, message: 'Missing fields' });
+    if (!username || !password || !email) {
+      return res.status(400).json({ success: false, message: 'All fields required' });
+    }
 
     const existingUser = await User.findOne({ username });
-    if (existingUser) return res.status(400).json({ success: false, message: 'User exists' });
+    if (existingUser) return res.status(400).json({ success: false, message: 'Username already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword, role: 'user' });
+    const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
 
     res.json({ success: true, message: 'Signup successful' });
-
   } catch (err) {
     console.error('Signup error:', err);
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
 
-
 // 🔑 Login Route
 app.post('/api/login', async (req, res) => {
-  const { username, password } = req.body;
-
   try {
+    const { username, password } = req.body;
+
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ success: false, message: 'Invalid credentials' });
 
@@ -71,7 +76,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Update user role (admin only)
+// 🔄 Role Update (for Admins only)
 app.put('/api/update-role', async (req, res) => {
   const { username, newRole } = req.body;
 
@@ -93,16 +98,16 @@ app.put('/api/update-role', async (req, res) => {
   }
 });
 
-// 📧 Nodemailer setup
+// 📧 Nodemailer config
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'anbind2020@gmail.com',
-    pass: 'qone uqnq frtp pgny' // Gmail App Password
+    pass: 'qone uqnq frtp pgny' // App password
   },
 });
 
-// 📮 Quote/Sample/Order mail route
+// 📮 Quote/Sample/Order
 app.post('/api/send-mail', async (req, res) => {
   const { type, name, email, phone, company, address, items } = req.body;
 
@@ -137,7 +142,7 @@ app.post('/api/send-mail', async (req, res) => {
   }
 });
 
-// 📮 Contact form route
+// 📮 Contact Form
 app.post('/api/contact', async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
 
@@ -168,7 +173,7 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Start Server
+// ✅ Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
