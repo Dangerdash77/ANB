@@ -4,15 +4,14 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
-
+// const User = require('User');
+require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://manavkalola1612:<XRsY7Jzwjbwh1cNw>@anb.qfvinj9.mongodb.net/anb?retryWrites=true&w=majority&appName=ANB', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => console.log('✅ MongoDB connected'))
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('❌ MongoDB error:', err));
 
 // Define User Schema
@@ -33,22 +32,26 @@ app.get("/", (req, res) => res.send("🌐 ANB Server is running!"));
 
 // 🔐 Signup Route
 app.post('/api/signup', async (req, res) => {
-  const { username, email, password } = req.body;
-
   try {
+    const { username, password } = req.body;
+
+    if (!username || !password) return res.status(400).json({ success: false, message: 'Missing fields' });
+
     const existingUser = await User.findOne({ username });
-    if (existingUser) return res.status(400).json({ success: false, message: 'Username already exists' });
+    if (existingUser) return res.status(400).json({ success: false, message: 'User exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, email, password: hashedPassword });
-    await user.save();
+    const newUser = new User({ username, password: hashedPassword, role: 'user' });
+    await newUser.save();
 
-    res.json({ success: true, message: 'User registered successfully' });
+    res.json({ success: true, message: 'Signup successful' });
+
   } catch (err) {
-    console.error("Signup error:", err);
-    res.status(500).json({ success: false, message: 'Signup failed' });
+    console.error('Signup error:', err);
+    res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
+
 
 // 🔑 Login Route
 app.post('/api/login', async (req, res) => {
