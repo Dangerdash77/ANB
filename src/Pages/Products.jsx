@@ -376,6 +376,7 @@ const ProductPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        credentials: 'include', // ✅ Send cookies with request
       });
 
       const result = await res.json();
