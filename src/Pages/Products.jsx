@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
 import './Pages css/Products.css';
 import cartIcon from '../assets/cart.png';
 // Add separate imports for each product image:
@@ -28,15 +29,6 @@ import cartIcon from '../assets/cart.png';
 // import img24 from '../assets/product_img/Chain Stopper Ball.png';
 // import img25 from '../assets/product_img/Chain Jointer.png';
 
-const API = import.meta.env.VITE_API_BASE_URL || '';
-const [products, setProducts] = useState([]);
-
-useEffect(() => {
-  fetch(`${API}/api/products`)
-    .then(res => res.json())
-    .then(data => setProducts(data.products || []))
-    .catch(err => console.error("Failed to load products:", err));
-}, []);
 
 // const sampleProducts = [
 //   {
@@ -403,6 +395,28 @@ const ProductPage = () => {
       setLoading(false);
     }
   };
+
+  // ✅ Set API base URL (fallback to relative path if not defined)
+  const API = import.meta?.env?.VITE_API_BASE_URL ?? '';
+
+  // ✅ Inside your React component
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`${API}/api/products`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        setProducts(data.products || []);
+      } catch (err) {
+        console.error("❌ Failed to load products:", err.message || err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
 
   return (
     <div className="product-page">
