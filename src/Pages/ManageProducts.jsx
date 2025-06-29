@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Pages css/ManageProducts.css';
 
 // ✅ Use environment variable for API base URL (Vercel/local)
-const API = import.meta.env.VITE_API_BASE_URL || '';
+const API = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, ''); // ✅ remove trailing slash
 
 const initialForm = {
   name: '',
