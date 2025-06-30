@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Pages css/ManageProducts.css';
 
-// ✅ Use environment variable for API base URL (Vercel/local)
-const API = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, ''); // ✅ remove trailing slash
+const API = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
 
 const initialForm = {
   name: '',
@@ -45,10 +44,8 @@ const ManageProducts = () => {
     try {
       const res = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // 🔐 send cookies (for JWT auth)
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(form),
       });
 

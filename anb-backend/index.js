@@ -3,52 +3,54 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
-require('dotenv').config();
-const authMiddleware = require('./middleware/authMiddleware');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
+
+const authMiddleware = require('./middleware/authMiddleware');
+const Product = require('./models/Product');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const Product = require('./models/Product');
 
-// ✅ CORS CONFIGURATION (must be before routes)
+// ✅ CORS CONFIGURATION
 const corsOptions = {
-  origin: 'https://www.anbindustries.com',
+  origin: 'https://www.anbindustries.com', // change if needed
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // handle preflight requests
+app.options('*', cors(corsOptions));
 
 // ✅ Middleware
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// ✅ MongoDB connection
+// ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
-  dbName: 'anb'
+  dbName: 'anb',
 }).then(() => {
   console.log('✅ MongoDB connected');
 }).catch(err => {
   console.error('❌ MongoDB error:', err);
 });
 
-// ✅ User model
+// ✅ User Model
 const UserSchema = new mongoose.Schema({
   username: { type: String, unique: true },
-  email: { type: String },
-  password: { type: String },
-  role: { type: String, default: 'user' }
+  email: String,
+  password: String,
+  role: { type: String, default: 'user' },
 });
 const User = mongoose.model('User', UserSchema);
 
-// ✅ Routes
-app.get("/", (req, res) => res.send("🌐 ANB Server is running!"));
+// ✅ Base Route
+app.get('/', (req, res) => res.send('🌐 ANB Server is running!'));
 
-// ✅ Get all products (public)
+
+// ✅ Get all products (Public)
 app.get('/api/products', async (req, res) => {
   try {
     const products = await Product.find();
@@ -58,28 +60,27 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// ✅ Add a product (owner only)
+// ✅ Add a product (Owner only)
 app.post('/api/products', authMiddleware, async (req, res) => {
   if (req.user.role !== 'owner') {
     return res.status(403).json({ success: false, message: 'Forbidden: Only owners can add products' });
   }
 
-  const { name, image, minQty, details } = req.body;
-  if (!name || !image || !minQty || !details) {
-    return res.status(400).json({ success: false, message: 'All fields are required' });
+  const { name, image, minQty, size, color, material, stdPacking } = req.body;
+  if (!name || !image || !minQty) {
+    return res.status(400).json({ success: false, message: 'Required fields missing' });
   }
 
   try {
-    const product = new Product({ name, image, minQty, details });
+    const product = new Product({ name, image, minQty, size, color, material, stdPacking });
     await product.save();
     res.status(201).json({ success: true, message: 'Product added', product });
   } catch (err) {
-    console.error('Error adding product:', err);
     res.status(500).json({ success: false, message: 'Server error while adding product' });
   }
 });
 
-// ✅ Update product (owner only)
+// ✅ Update product (Owner only)
 app.put('/api/products/:id', authMiddleware, async (req, res) => {
   if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
 
@@ -91,7 +92,7 @@ app.put('/api/products/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ Delete product (owner only)
+// ✅ Delete product (Owner only)
 app.delete('/api/products/:id', authMiddleware, async (req, res) => {
   if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
 
@@ -103,15 +104,17 @@ app.delete('/api/products/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ Auth routes
+// ✅ Signup
 app.post('/api/signup', async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, email, password } = req.body;
   if (!username || !password || !email) {
     return res.status(400).json({ success: false, message: 'All fields required' });
   }
 
   const existingUser = await User.findOne({ username });
-  if (existingUser) return res.status(400).json({ success: false, message: 'Username already exists' });
+  if (existingUser) {
+    return res.status(400).json({ success: false, message: 'Username already exists' });
+  }
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = new User({ username, email, password: hashedPassword });
@@ -120,6 +123,7 @@ app.post('/api/signup', async (req, res) => {
   res.json({ success: true, message: 'Signup successful' });
 });
 
+// ✅ Login
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -129,24 +133,22 @@ app.post('/api/login', async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ success: false, message: 'Invalid credentials' });
 
-  const token = jwt.sign(
-    { username: user.username, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: '2d' }
-  );
+  const token = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2d' });
 
   res.cookie('token', token, {
     httpOnly: true,
     sameSite: 'Strict',
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 1000 * 60 * 60 * 24 * 2
+    maxAge: 1000 * 60 * 60 * 24 * 2,
   }).json({ success: true, message: 'Logged in', role: user.role });
 });
 
+// ✅ Logout
 app.post('/api/logout', (req, res) => {
   res.clearCookie('token').json({ success: true, message: 'Logged out' });
 });
 
+// ✅ Protected route test
 app.get('/api/protected', authMiddleware, (req, res) => {
   res.json({
     message: `Welcome ${req.user.username}, you are logged in as ${req.user.role}`,
@@ -154,13 +156,13 @@ app.get('/api/protected', authMiddleware, (req, res) => {
   });
 });
 
+// ✅ Admin-only test route
 app.get('/api/admin-only', authMiddleware, (req, res) => {
-  if (req.user.role !== 'owner') {
-    return res.status(403).json({ message: 'Forbidden' });
-  }
+  if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
   res.json({ message: 'Hello Admin!' });
 });
 
+// ✅ Update user role
 app.put('/api/update-role', async (req, res) => {
   const { username, newRole } = req.body;
 
@@ -170,23 +172,21 @@ app.put('/api/update-role', async (req, res) => {
 
     res.json({ success: true, message: 'Role updated', user: updatedUser });
   } catch (err) {
-    console.error('Role update error:', err);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 
-// ✅ Mail handlers
+// ✅ Mail: Sample/Quote/Order
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'anbind2020@gmail.com',
-    pass: 'qone uqnq frtp pgny'
+    pass: 'qone uqnq frtp pgny',
   },
 });
 
 app.post('/api/send-mail', async (req, res) => {
   const { type, name, email, phone, company, address, items } = req.body;
-
   const itemList = items.map(item => `<li>${item.name} (Qty: ${item.quantity})</li>`).join('');
   const addressLine = address ? `<p><strong>Address:</strong> ${address}</p>` : '';
 
@@ -210,14 +210,13 @@ app.post('/api/send-mail', async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: 'Mail sent successfully' });
   } catch (err) {
-    console.error('Mail error:', err);
     res.status(500).json({ success: false, message: 'Mail sending failed' });
   }
 });
 
+// ✅ Mail: Contact Us
 app.post('/api/contact', async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
-
   if (!name || !email || !subject || !message) {
     return res.status(400).json({ success: false, message: 'Please fill in all required fields.' });
   }
@@ -232,7 +231,7 @@ app.post('/api/contact', async (req, res) => {
       <p><strong>Email:</strong> ${email}</p>
       <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
       <h3><strong>Subject:</strong> ${subject}</h3>
-      <p><strong>Message:</strong> <br>${message}</p>
+      <p><strong>Message:</strong><br>${message}</p>
     `,
   };
 
@@ -240,7 +239,6 @@ app.post('/api/contact', async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: 'Your message was sent successfully!' });
   } catch (err) {
-    console.error('Contact mail error:', err);
     res.status(500).json({ success: false, message: 'Message sending failed' });
   }
 });
