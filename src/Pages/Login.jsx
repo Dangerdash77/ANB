@@ -8,17 +8,34 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    console.log("API:", import.meta.env.VITE_SERVER_ORIGIN); 
     e.preventDefault();
+    const apiBase = import.meta.env.VITE_SERVER_ORIGIN;
+    const loginUrl = `${apiBase}/api/users/login`;
+
+    console.log("🔧 Debug: Environment VITE_SERVER_ORIGIN =", apiBase);
+    console.log("🔧 Debug: Sending POST request to =", loginUrl);
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/users/login`, {
+      const response = await fetch(loginUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.json();
+      console.log("🔧 Debug: Response status =", response.status);
+
+      let data = {};
+      try {
+        data = await response.json();
+        console.log("🔧 Debug: Response body =", data);
+      } catch (jsonErr) {
+        const text = await response.text();
+        console.warn("⚠️ Warning: Failed to parse JSON. Raw response:", text);
+        throw new Error("Invalid JSON response");
+      }
+
       if (data.success) {
+        console.log("✅ Login successful. Role:", data.role);
         setIsLoggedIn(true);
         setRole(data.role || 'user');
 
@@ -34,7 +51,7 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
         alert(data.message || 'Invalid credentials');
       }
     } catch (err) {
-      console.error('Login failed:', err);
+      console.error('❌ Login failed:', err);
       alert('Server error. Try again later.');
     }
   };
