@@ -8,6 +8,7 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
+    console.log("API:", import.meta.env.VITE_SERVER_ORIGIN); 
     e.preventDefault();
     try {
       const response = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/users/login`, {
