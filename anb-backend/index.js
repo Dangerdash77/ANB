@@ -8,14 +8,15 @@ const cookieParser = require('cookie-parser');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-const authMiddleware = require('./middleware/authMiddleware'); // ✅ use ./ not ../
+const authMiddleware = require('./middleware/authMiddleware');
 const Product = require('./models/Product');
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 // ✅ CORS CONFIGURATION
 const corsOptions = {
-  origin: 'https://www.anbindustries.com', // Update as needed
+  origin: 'https://www.anbindustries.com', // change if needed
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -48,7 +49,8 @@ const User = mongoose.model('User', UserSchema);
 // ✅ Base Route
 app.get('/', (req, res) => res.send('🌐 ANB Server is running!'));
 
-// ✅ Product Routes
+
+// ✅ Get all products (Public)
 app.get('/api/products', async (req, res) => {
   try {
     const products = await Product.find();
@@ -58,6 +60,7 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
+// ✅ Add a product (Owner only)
 app.post('/api/products', authMiddleware, async (req, res) => {
   if (req.user.role !== 'owner') {
     return res.status(403).json({ success: false, message: 'Forbidden: Only owners can add products' });
@@ -77,6 +80,7 @@ app.post('/api/products', authMiddleware, async (req, res) => {
   }
 });
 
+// ✅ Update product (Owner only)
 app.put('/api/products/:id', authMiddleware, async (req, res) => {
   if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
 
@@ -88,6 +92,7 @@ app.put('/api/products/:id', authMiddleware, async (req, res) => {
   }
 });
 
+// ✅ Delete product (Owner only)
 app.delete('/api/products/:id', authMiddleware, async (req, res) => {
   if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
 
@@ -99,7 +104,7 @@ app.delete('/api/products/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ Auth Routes
+// ✅ Signup
 app.post('/api/signup', async (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !password || !email) {
@@ -118,6 +123,7 @@ app.post('/api/signup', async (req, res) => {
   res.json({ success: true, message: 'Signup successful' });
 });
 
+// ✅ Login
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -133,15 +139,45 @@ app.post('/api/login', async (req, res) => {
     httpOnly: true,
     sameSite: 'None',
     secure: true,
+    // secure: process.env.NODE_ENV === 'production',
     maxAge: 1000 * 60 * 60 * 24 * 2,
   }).json({ success: true, message: 'Logged in', role: user.role });
 });
 
+// ✅ Logout
 app.post('/api/logout', (req, res) => {
   res.clearCookie('token').json({ success: true, message: 'Logged out' });
 });
 
-// ✅ Mail: Contact
+// ✅ Protected route test
+app.get('/api/protected', authMiddleware, (req, res) => {
+  res.json({
+    message: `Welcome ${req.user.username}, you are logged in as ${req.user.role}`,
+    user: req.user,
+  });
+});
+
+// ✅ Admin-only test route
+app.get('/api/admin-only', authMiddleware, (req, res) => {
+  if (req.user.role !== 'owner') return res.status(403).json({ message: 'Forbidden' });
+  res.json({ message: 'Hello Admin!' });
+});
+
+// ✅ Update user role
+app.put('/api/update-role', async (req, res) => {
+  const { username, newRole } = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate({ username }, { role: newRole }, { new: true });
+    if (!updatedUser) return res.status(404).json({ success: false, message: 'User not found' });
+
+    res.json({ success: true, message: 'Role updated', user: updatedUser });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// ✅ Mail: Sample/Quote/Order
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -150,6 +186,36 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+app.post('/api/send-mail', async (req, res) => {
+  const { type, name, email, phone, company, address, items } = req.body;
+  const itemList = items.map(item => `<li>${item.name} (Qty: ${item.quantity})</li>`).join('');
+  const addressLine = address ? `<p><strong>Address:</strong> ${address}</p>` : '';
+
+  const mailOptions = {
+    from: 'anbind2020@gmail.com',
+    to: 'anbind2020@gmail.com',
+    subject: `New ${type} Request from ${name}`,
+    html: `
+      <h2>${type} Request</h2>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
+      <p><strong>Company:</strong> ${company || 'N/A'}</p>
+      ${addressLine}
+      <h3>Requested Items:</h3>
+      <ul>${itemList}</ul>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.json({ success: true, message: 'Mail sent successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Mail sending failed' });
+  }
+});
+
+// ✅ Mail: Contact Us
 app.post('/api/contact', async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
   if (!name || !email || !subject || !message) {
@@ -178,11 +244,9 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// ✅ Export app for Vercel
 if (process.env.VERCEL) {
-  module.exports = app; // ✅ for Vercel
+  module.exports = app; // For Vercel
 } else {
-  const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
   });
