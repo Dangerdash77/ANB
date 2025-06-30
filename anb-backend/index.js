@@ -1,22 +1,22 @@
 const express = require("express");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
 const connectToDB = require("./database/connect");
 const routes = require("./routes/routes");
-const dotenv = require("dotenv");
-const port = 4000;
 
 dotenv.config();
-
 const app = express();
+const port = process.env.PORT || 4000;
 
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ✅ CORS Configuration
 const allowedOrigins = [
   "http://localhost:3000",
   "https://www.anbindustries.com",
-  process.env.CLIENT_ORIGIN
 ];
 
 app.use(cors({
@@ -24,16 +24,18 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS: " + origin));
+      console.error("❌ Blocked by CORS:", origin);
+      callback(new Error("Not allowed by CORS"));
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
 
-
+// ✅ Connect to DB
 connectToDB(process.env.MONGO_URI);
 
+// ✅ Mail Transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -42,11 +44,15 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// ✅ API Routes
 app.use("/api", routes);
 
+// ✅ Send Mail (Quote/Sample/Order)
 app.post('/api/send-mail', async (req, res) => {
   const { type, name, email, phone, company, address, items } = req.body;
-  const itemList = items.map(item => `<li>${item.name} (Qty: ${item.quantity})</li>`).join('');
+
+  const itemList = items.map(item =>
+    `<li>${item.name} (Qty: ${item.quantity})</li>`).join('');
   const addressLine = address ? `<p><strong>Address:</strong> ${address}</p>` : '';
 
   const mailOptions = {
@@ -69,12 +75,15 @@ app.post('/api/send-mail', async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: 'Mail sent successfully' });
   } catch (err) {
+    console.error("❌ Mail Error:", err);
     res.status(500).json({ success: false, message: 'Mail sending failed' });
   }
 });
 
+// ✅ Contact Form Handler
 app.post('/api/contact', async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
+
   if (!name || !email || !subject || !message) {
     return res.status(400).json({ success: false, message: 'Please fill in all required fields.' });
   }
@@ -97,11 +106,12 @@ app.post('/api/contact', async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: 'Your message was sent successfully!' });
   } catch (err) {
+    console.error("❌ Contact Error:", err);
     res.status(500).json({ success: false, message: 'Message sending failed' });
   }
 });
 
-
-app.listen(port, function () {
-  console.log("Server started");
-})
+// ✅ Start Server
+app.listen(port, () => {
+  console.log(`✅ Server running on port ${port}`);
+});
