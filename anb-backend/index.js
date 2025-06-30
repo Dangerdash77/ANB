@@ -6,33 +6,31 @@ const routes = require("./routes/routes");
 const dotenv = require("dotenv");
 const port = 4000;
 
-
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://www.anbindustries.com"
-];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true,
-}));
-
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://www.anbindustries.com",
+  process.env.CLIENT_ORIGIN
+];
+
 app.use(cors({
-    origin: process.env.CLIENT_ORIGIN,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-}))
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS: " + origin));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
+
 
 connectToDB(process.env.MONGO_URI);
 
@@ -104,6 +102,6 @@ app.post('/api/contact', async (req, res) => {
 });
 
 
-app.listen(port, function() {
-    console.log("Server started");
+app.listen(port, function () {
+  console.log("Server started");
 })
