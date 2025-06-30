@@ -10,7 +10,7 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://anb-nuis.vercel.app/api/login', {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/users/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

@@ -13,7 +13,7 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('https://anb-nuis.vercel.app/api/signup', {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/users/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
