@@ -7,6 +7,21 @@ const dotenv = require("dotenv");
 const port = 4000;
 
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://www.anbindustries.com"
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+}));
+
 dotenv.config();
 
 const app = express();
