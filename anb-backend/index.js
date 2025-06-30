@@ -13,7 +13,7 @@ const Product = require('./models/Product');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-//sf
+
 // ✅ CORS CONFIGURATION
 const corsOptions = {
   origin: 'https://www.anbindustries.com', // change if needed
@@ -244,7 +244,6 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// ✅ Start Server
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
