@@ -138,7 +138,8 @@ app.post('/api/login', async (req, res) => {
   res.cookie('token', token, {
     httpOnly: true,
     sameSite: 'None',
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,
+    // secure: process.env.NODE_ENV === 'production',
     maxAge: 1000 * 60 * 60 * 24 * 2,
   }).json({ success: true, message: 'Logged in', role: user.role });
 });
