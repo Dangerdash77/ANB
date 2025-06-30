@@ -10,7 +10,7 @@ async function getProducts(req, res) {
       .json({ success: false, message: "Failed to fetch products" });
   }
 }
-//gvusu
+
 async function registerProduct(req, res) {
   const { name, image, minQty, size, color, material, stdPacking } = req.body;
   if (!name || !image || !minQty) {
