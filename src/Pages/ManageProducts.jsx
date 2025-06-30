@@ -43,7 +43,7 @@ const ManageProducts = () => {
 
     try {
       const res = await fetch(url, {
-        method,
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify(form),

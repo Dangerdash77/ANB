@@ -9,14 +9,18 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
       const response = await fetch('https://anb-nuis.vercel.app/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // ✅ Important for cookie-based auth
         body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
+      console.log('Login response:', data); // ✅ Debug log
+
       if (data.success) {
         setIsLoggedIn(true);
         setRole(data.role || 'user');
@@ -24,7 +28,10 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userRole', data.role || 'user');
 
-        // Navigate by role
+        // ✅ Confirm cookie is now set
+        console.log('✅ Login successful. Cookie should be stored.');
+
+        // Redirect based on role
         if (data.role === 'owner') navigate('/company');
         else if (data.role === 'manager') navigate('/manager/tasks');
         else if (data.role === 'employee') navigate('/employee/tasks');
@@ -33,7 +40,7 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
         alert(data.message || 'Invalid credentials');
       }
     } catch (err) {
-      console.error('Login failed:', err);
+      console.error('Login error:', err);
       alert('Server error. Try again later.');
     }
   };
@@ -42,10 +49,20 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
     <div className="login-container">
       <form className="login-form" onSubmit={handleLogin}>
         <h2>Login</h2>
-        <input type="text" placeholder="Username" value={username}
-               onChange={(e) => setUsername(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password}
-               onChange={(e) => setPassword(e.target.value)} required />
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <button type="submit">Login</button>
         <p><a href="/forgot-password">Forgot Password?</a></p>
         <p>New user? <a href="/signup">Sign Up</a></p>
