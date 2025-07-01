@@ -37,7 +37,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get("/", (req, res) => {res.send("Welcome to ANB Backend API")});
 // Routes
 app.use("/api", routes);
 // app.use("/api/users", userRoutes);       // For login, signup, profile update, etc.
