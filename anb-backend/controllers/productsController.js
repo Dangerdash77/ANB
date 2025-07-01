@@ -4,6 +4,7 @@ const Product = require("../models/Product");
 async function getProducts(req, res) {
   try {
     const products = await Product.find();
+    console.log(products);
     const formattedProducts = products.map((product) => ({
       ...product._doc,
       image:

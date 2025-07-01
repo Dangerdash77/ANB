@@ -3,9 +3,10 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
+const routes = express.Router();
 
 const connectToDB = require("./database/connect");
-const routes = require("./routes/routes");
+// const routes = require("./routes/routes");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 
@@ -38,7 +39,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Routes
-app.use("/api", routes);
+// app.use("/api", routes);
 app.use("/api/users", userRoutes);       // For login, signup, profile update, etc.
 app.use("/api/products", productRoutes); // For product management
 
