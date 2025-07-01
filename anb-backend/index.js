@@ -4,7 +4,8 @@ const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 
-const connectToDB = require("./database/connect");;
+const connectToDB = require("./database/connect");
+const routes = require("./routes/routes");
 // const userRoutes = require("./routes/userRoutes");
 // const productRoutes = require("./routes/productRoutes");
 
