@@ -3,12 +3,11 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const routes = express.Router();
 
 const connectToDB = require("./database/connect");
-// const routes = require("./routes/routes");
-const userRoutes = require("./routes/userRoutes");
-const productRoutes = require("./routes/productRoutes");
+const routes = require("./routes/routes");
+// const userRoutes = require("./routes/userRoutes");
+// const productRoutes = require("./routes/productRoutes");
 
 dotenv.config();
 
@@ -38,10 +37,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+app.get("/", (req, res) => {res.send("Welcome to ANB Backend API")});
 // Routes
-// app.use("/api", routes);
-app.use("/api/users", userRoutes);       // For login, signup, profile update, etc.
-app.use("/api/products", productRoutes); // For product management
+app.use("/api", routes);
+// app.use("/api/users", userRoutes);       // For login, signup, profile update, etc.
+// app.use("/api/products", productRoutes); // For product management
 
 
 // Quote / Sample / Order form mail
