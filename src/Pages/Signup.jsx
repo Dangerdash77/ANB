@@ -18,7 +18,7 @@ function Signup() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
+      console.log(`${import.meta.env.VITE_SERVER_ORIGIN}/api/users/signup`)
       const data = await res.json();
       if (data.success) {
         alert('✅ Signup successful! Please login.');
@@ -28,7 +28,7 @@ function Signup() {
       }
     } catch (err) {
       console.error(err);
-      alert('🚫 Server error. Try again later.');
+      alert('🚫 Server error. Try again later.'+ err.message);
     }
   };
 

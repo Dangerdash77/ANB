@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, default: "user" },
   accessToken: { type: String },
+  photo: {
+    data: Buffer,
+    contentType: String,
+  },
 });
 
 userSchema.pre("save", async function (next) {

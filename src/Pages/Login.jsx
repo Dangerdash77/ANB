@@ -19,6 +19,7 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
       const response = await fetch(loginUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // 👈 cookie support added
         body: JSON.stringify({ username, password }),
       });
 
@@ -42,7 +43,6 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userRole', data.role || 'user');
 
-        // Navigate by role
         if (data.role === 'owner') navigate('/company');
         else if (data.role === 'manager') navigate('/manager/tasks');
         else if (data.role === 'employee') navigate('/employee/tasks');
@@ -60,10 +60,20 @@ function Login({ setIsLoggedIn = () => {}, setRole = () => {} }) {
     <div className="login-container">
       <form className="login-form" onSubmit={handleLogin}>
         <h2>Login</h2>
-        <input type="text" placeholder="Username" value={username}
-               onChange={(e) => setUsername(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password}
-               onChange={(e) => setPassword(e.target.value)} required />
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <button type="submit">Login</button>
         <p><a href="/forgot-password">Forgot Password?</a></p>
         <p>New user? <a href="/signup">Sign Up</a></p>

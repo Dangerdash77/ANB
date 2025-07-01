@@ -2,52 +2,48 @@ const express = require("express");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+
 const connectToDB = require("./database/connect");
 const routes = require("./routes/routes");
+const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
 
 dotenv.config();
+
 const app = express();
-const port = process.env.PORT || 4000;
+const port = 4000;
+
+// Connect to MongoDB
+connectToDB(process.env.MONGO_URI);
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// ✅ CORS Configuration
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://www.anbindustries.com",
-];
+app.use(cookieParser()); // Important: before routes needing cookies
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.error("❌ Blocked by CORS:", origin);
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: process.env.CLIENT_ORIGIN,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
 
-// ✅ Connect to DB
-connectToDB(process.env.MONGO_URI);
-
-// ✅ Mail Transporter
+// Mail setup
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'anbind2020@gmail.com',
-    pass: 'qone uqnq frtp pgny',
+    pass: 'qone uqnq frtp pgny', // ⚠️ Consider using env var for security
   },
 });
 
-// ✅ API Routes
+// Routes
 app.use("/api", routes);
+app.use("/api/users", userRoutes);       // For login, signup, profile update, etc.
+app.use("/api/products", productRoutes); // For product management
 
-// ✅ Send Mail (Quote/Sample/Order)
+
+// Quote / Sample / Order form mail
 app.post('/api/send-mail', async (req, res) => {
   const { type, name, email, phone, company, address, items } = req.body;
 
@@ -75,12 +71,12 @@ app.post('/api/send-mail', async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: 'Mail sent successfully' });
   } catch (err) {
-    console.error("❌ Mail Error:", err);
+    console.error("❌ Mail error:", err);
     res.status(500).json({ success: false, message: 'Mail sending failed' });
   }
 });
 
-// ✅ Contact Form Handler
+// Contact Us form mail
 app.post('/api/contact', async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
 
@@ -106,12 +102,12 @@ app.post('/api/contact', async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: 'Your message was sent successfully!' });
   } catch (err) {
-    console.error("❌ Contact Error:", err);
+    console.error("❌ Contact mail error:", err);
     res.status(500).json({ success: false, message: 'Message sending failed' });
   }
 });
 
-// ✅ Start Server
+// Start server
 app.listen(port, () => {
-  console.log(`✅ Server running on port ${port}`);
+  console.log(`🚀 Server started on http://localhost:${port}`);
 });
